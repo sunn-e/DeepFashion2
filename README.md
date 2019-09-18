@@ -17,10 +17,12 @@ Computer Vision for Fashion, Art and Design](https://sites.google.com/view/cvcre
 * 2019-5-28 Links to DeepFashion2 challenges in ICCV 2019 Workshop are released. Detailed information is available in [Second Workshop on 
 Computer Vision for Fashion, Art and Design](https://sites.google.com/view/cvcreative/home?authuser=0).
 * 2019-7-1 Test images of DeepFashion2 are released in [DeepFashion2 dataset](https://drive.google.com/drive/folders/125F48fsMBz2EF0Cpqk6aaHet5VH399Ok?usp=sharing). (Password for unzipping test files is the same as that for unzipping training and validation files.)
+* 2019-7-12 Due to the damage in CodaLab database, we have republished our competitions in DeepFashion2 Challenge. If you are participates of DeepFashion2 Challenge, please recreate an account and upload your results again in [Landmark Estimation](https://codalab.lri.fr/competitions/564) or [Clothes Retrieval](https://codalab.lri.fr/competitions/565).
+* 2019-8-1 DeepFashion2 Challenge in 2019 ICCV Workshop ended.
+* 2019-9-6 Baseline of released DeepFashion2 dataset is available.
  
 # Download the Data
-DeepFashion2 dataset is available in [DeepFashion2 dataset](https://drive.google.com/drive/folders/125F48fsMBz2EF0Cpqk6aaHet5VH399Ok?usp=sharing). You need fill in the [form](https://docs.google.com/forms/d/e/1FAIpQLSeIoGaFfCQILrtIZPykkr8q_h9qQ5BoTYbjvf95aXbid0v2Bw/viewform?usp=sf_link) to get password for unzipping files. Please go to [Second Workshop on 
-Computer Vision for Fashion, Art and Design](https://sites.google.com/view/cvcreative/home?authuser=0) and challenge websites to learn more about DeepFashion2 dataset and download it. Test images will be released on July 1st. Please refer to Data Description below for detailed information about dataset.
+DeepFashion2 dataset is available in [DeepFashion2 dataset](https://drive.google.com/drive/folders/125F48fsMBz2EF0Cpqk6aaHet5VH399Ok?usp=sharing). You need fill in the [form](https://docs.google.com/forms/d/e/1FAIpQLSeIoGaFfCQILrtIZPykkr8q_h9qQ5BoTYbjvf95aXbid0v2Bw/viewform?usp=sf_link) to get password for unzipping files. Please refer to Data Description below for detailed information about dataset.
 
 # Data Organization
 Each image in seperate image set has a unique six-digit number such as 000001.jpg. A corresponding annotation file in json
@@ -32,7 +34,7 @@ Each annotation file is organized as below:
     * **category_name**: a string which indicates the category of the item.
     * **category_id**: a number which corresponds to the category name. In category_id, 1 represents short sleeve top, 2 represents long sleeve top, 3 represents short sleeve outwear, 4 represents long sleeve outwear, 5 represents vest, 6 represents sling, 7 represents shorts, 8 represents trousers, 9 represents skirt, 10 represents short sleeve dress, 11 represents long sleeve dress, 12 represents vest dress and 13 represents sling dress.
     * **style**: a number to distinguish between clothing items from images with the same pair id. Clothing items with different style numbers from images with the same pair id have different styles such as color, printing, and logo. In this way, a clothing item from shop images and a clothing item from user image are positive commercial-consumer pair if they have the same style number greater than 0 and they are from images with the same pair id.(If you are confused with style, please refer to issue#10.) 
-    * **bounding_box**: [x1,y1,x2,y2]，where x1 and y_1 represent the lower left point coordinate of bounding box, x_2 and y_2 represent the upper right point coordinate of bounding box. 
+    * **bounding_box**: [x1,y1,x2,y2]，where x1 and y_1 represent the upper left point coordinate of bounding box, x_2 and y_2 represent the lower right point coordinate of bounding box. (width=x2-x1;height=y2-y1)
     * **landmarks**: [x1,y1,v1,...,xn,yn,vn], where v represents the visibility: v=2 visible; v=1 occlusion; v=0 not labeled. We have different definitions of landmarks for different categories. The orders of landmark annotations are listed in figure 2.
     * **segmentation**: [[x1,y1,...xn,yn],[ ]], where [x1,y1,xn,yn] represents a polygon and a single clothing item may contain more than one polygon.
     * **scale**: a number, where 1 represents small scale, 2 represents modest scale and 3 represents large scale.
@@ -91,12 +93,18 @@ Figure 3 shows the statistics of different variations and the numbers of items o
 
 ![image](https://github.com/switchablenorms/DeepFashion2/blob/master/images/statistics_all.jpg)
 
-# Benchmarks(For benchmarks of released dataset, please refer to [DeepFashion2 Challenge](https://sites.google.com/view/cvcreative/deepfashion2?authuser=0).)
+# Benchmarks
 ## Clothes Detection
 This task detects clothes in an image by predicting bounding boxes and category labels to each detected clothing item.
 The evaluation metrics are the bounding box's average precision <a href="https://www.codecogs.com/eqnedit.php?latex=$&space;{AP}_{box}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$&space;{AP}_{box}$" title="$ {AP}_{box}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{box}^{IoU=0.50}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{box}^{IoU=0.50}$" title="${AP}_{box}^{IoU=0.50}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{box}^{IoU=0.75}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{box}^{IoU=0.75}$" title="${AP}_{box}^{IoU=0.75}$" /></a>.
 
-<p align='center'>Table 2: Clothes detection on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.</p>
+<p align='center'>Table 2: Clothes detection trained with released DeepFashion2 Dataset evaluated on validation set.</p>
+
+| AP | AP50 | AP75 | 
+|---:|---:|---:|
+|0.638|0.789|0.745|
+
+<p align='center'>Table 3: Clothes detection on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.</p>
 
 |||<sub>Scale|||<sub>Occlusion|||<sub>Zoom_in|||<sub>Viewpoint||<sub>Overall|
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -107,7 +115,15 @@ The evaluation metrics are the bounding box's average precision <a href="https:/
 
 ## Landmark and Pose Estimation
 This task aims to predict landmarks for each detected clothing item in an each image.Similarly, we employ the evaluation metrics used by COCOfor human pose estimation by calculating the average precision for keypoints <a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{pt}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{pt}$" title="${AP}_{pt}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{pt}^{OKS=0.50}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{pt}^{OKS=0.50}$" title="${AP}_{pt}^{OKS=0.50}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{pt}^{OKS=0.75}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{pt}^{OKS=0.75}$" title="${AP}_{pt}^{OKS=0.75}$" /></a> where OKS indicates the object landmark similarity.
-<p align='center'>Table 3: Landmark Estimation on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.Results of evaluation on visible landmarks only and evaluation on both visible and occlusion landmarks are separately shown in each row</p>
+
+<p align='center'>Table 4: Landmark estimation trained with released DeepFashion2 Dataset evaluated on validation set.</p>
+
+| | AP | AP50 | AP75 | 
+|---:|---:|---:|---:|
+|vis|0.605|0.790|0.684|
+|vis && hide|0.529|0.775|0.596|
+
+<p align='center'>Table 5: Landmark Estimation on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.Results of evaluation on visible landmarks only and evaluation on both visible and occlusion landmarks are separately shown in each row</p>
 
 |||<sub>Scale|||<sub>Occlusion|||<sub>Zoom_in|||<sub>Viewpoint||<sub>Overall|
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -124,7 +140,14 @@ Figure 4 shows the results of landmark and pose estimation.
 
 ## Clothes Segmentation
 This task assigns a category label (including background label) to each pixel in an item.The evaluation metrics is the average precision including <a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{mask}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{mask}$" title="${AP}_{mask}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{mask}^{IoU=0.50}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{mask}^{IoU=0.50}$" title="${AP}_{mask}^{IoU=0.50}$" /></a>,<a href="https://www.codecogs.com/eqnedit.php?latex=${AP}_{mask}^{IoU=0.75}$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?${AP}_{mask}^{IoU=0.75}$" title="${AP}_{mask}^{IoU=0.75}$" /></a> computed over masks.
-<p align='center'>Table 4: Clothes Segmentation on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.</p>
+
+<p align='center'>Table 6: Clothes segmentation trained with released DeepFashion2 Dataset evaluated on validation set.</p>
+
+| AP | AP50 | AP75 | 
+|---:|---:|---:|
+|0.640|0.797|0.754|
+
+<p align='center'>Table 7: Clothes Segmentation on different validation subsets, including scale, occlusion, zoom-in, and viewpoint.</p>
 
 |||<sub>Scale|||<sub>Occlusion|||<sub>Zoom_in|||<sub>Viewpoint||<sub>Overall|
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -142,7 +165,17 @@ Figure 5 shows the results of clothes segmentation.
 ## Consumer-to-Shop Clothes Retrieval
 Given a detected item from a consumer-taken photo, this task aims to search the commercial images in the gallery for the items that are corresponding to this detected item. In this task, top-k retrieval accuracy is employed as the evaluation metric. We emphasize the retrieval performance while still consider the influence of detector. If a clothing item fails to be detected, this query item is counted as missed.
 
-<p align='center'>Table 5: Consumer-to-Shop Clothes Retrieval on different subsets of some validation consumer-taken images. Each query item in these images has over 5 identical clothing items in validation commercial images. Results of evaluation on ground truth box and detected box are separately shown in each row. The evaluation metrics are top-20 accuracy.</p>
+<p align='center'>Table 8: Consumer-to-Shop Clothes Retrieval trained with released DeepFashion2 Dataset using detected box evaluated on validation set.</p>
+
+| | Top-1 | Top-5 | Top-10 | Top-15 | Top-20 | 
+|---:|---:|---:|---:|---:|---:|
+|class|0.079|0.198|0.273|0.329|0.366|
+|keypoints|0.182|0.326|0.416|0.469|0.510|
+|segmentation|0.135|0.271|0.350|0.407|0.447|
+|class+keys|0.192|0.345|0.435|0.488|0.524|
+|class+seg|0.152|0.295|0.379|0.435|0.477|
+
+<p align='center'>Table 9: Consumer-to-Shop Clothes Retrieval on different subsets of some validation consumer-taken images. Each query item in these images has over 5 identical clothing items in validation commercial images. Results of evaluation on ground truth box and detected box are separately shown in each row. The evaluation metrics are top-20 accuracy.</p>
 
 |||<sub>Scale|||<sub>Occlusion|||<sub>Zoom_in|||<sub>Viewpoint|||<sub>Overall||
 |:----:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
